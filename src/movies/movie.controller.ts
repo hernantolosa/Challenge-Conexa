@@ -1,12 +1,15 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
 import { MoviesService } from './movie.service';
-import { Movie } from './schemas/movie.schema';
+import { Movie, MovieDocument } from './schemas/movie.schema';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 import { RolesGuard } from '../auth/guard/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../users/enums/roles.enum';
 import { FailedToCreateMovieException, NoMovieFoundException, NoMoviesFoundException } from '../movies/exceptions/movies.exceptions';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { CreateMovieResponseDto } from './dto/create-movie-response.dto';
+import { GetUser } from '@app/users/decorators/get-user.decorator';
+import { User } from '@app/users/types/user.type';
 
 
 @Controller('api/movies')
@@ -14,31 +17,32 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  async findAll(): Promise<{movies: Movie[]}> {
-    const movies = await this.moviesService.findAll();
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async findAll(@GetUser() user: User): Promise<{ movies: any[] }> {
+    const movies = await this.moviesService.findAll(user.role);
     if (!movies || movies.length === 0) {
       throw new NoMoviesFoundException();
     }
-    return {movies};
+    return { movies };
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
-  async findOne(@Param('id') id: string): Promise<Movie> {
-    const movie = await this.moviesService.findOne(id);
-    if (!movie) {
-      throw new NoMovieFoundException();
-    }
-    return movie;
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async findOne(@Param('id') id: string, @GetUser() user: User): Promise<Movie> {
+    return this.moviesService.findOne(id, user.role);
   }
+
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  async create(@Body() createMovieDto: CreateMovieDto): Promise<Movie> {
+  async create(@Body() createMovieDto: CreateMovieDto): Promise<CreateMovieResponseDto> {
     try {
-      return await this.moviesService.create(createMovieDto);
+      const movie = await this.moviesService.create(createMovieDto) as MovieDocument;
+      return {
+        code: "000",
+        description: `Success: Movie id ${movie._id} created successfully`
+      };
     } catch (error) {
       throw new FailedToCreateMovieException();
     }
@@ -63,7 +67,7 @@ export class MoviesController {
     try {
       return await this.moviesService.delete(id);
     } catch (error) {
-      throw new NoMovieFoundException(); // Si no se encuentra la película al intentar eliminarla
+      throw new NoMovieFoundException();
     }
   }
 }
