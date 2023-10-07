@@ -25,30 +25,35 @@ via POST la url: localhost:3000/api/auth/register y con el body:
     "email": "conex3a@gmail.com",
     "password": "password"
 } 
+```
 
 Esto registrara un usuario
 
 Segundo paso: Ejecutamos via POST la url: localhost:3000/api/auth/login
 
+```json
 {
     "username": "conexatest",
     "password": "password"
 } 
+```
 
 enviando el body que registramos, esto respondera con un objeto de la siguiente manera:
 
+```json
 {
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNvbmV4YXRlc3QiLCJzdWIiOiI2NTIwNzRjY2NlMTY2MzU0MzAwYmYyNjIiLCJyb2xlIjoiUmVndWxhciBVc2VyIiwiaWF0IjoxNjk2NjI1OTE2LCJleHAiOjE2OTY2Mjk1MTZ9.vaDr-QIVIfXQszKhqgTvrGrLemlXzEGSU7bWOGOXl5A"
 }
-
+```
 Luego con ese token, lo utilizamos para los servicios descriptos en el challenge: (Usar como Bearer Token)
 
 Para lo que es administrador, creamos al inicializarl la app un admin default que lo usaremos para las pruebas de la app:
+```json
 {
     "username": "admin",
     "password": "passwordAdmin"
 } 
-
+```
 nos dara el token de admin y podremos probar los otros endpoints de creacion edicion y borrar peliculas.
 
 Se adjunta carpeta para hacer ejecuciones via postman
@@ -69,7 +74,7 @@ Se utilizo la arquitectura de modularizacion que propone nestjs aislando en tres
 para el uso que sea necesario
 
 Ejemplo: 
-
+```json
 {
     "statusCode": 401,
     "timestamp": "2023-10-07T16:35:38.020Z",
@@ -79,7 +84,7 @@ Ejemplo:
         "statusCode": 401
     }
 }
-
+```
 Un campo statusCode, timestamp, path y el message con la descripcion del error.
 
 En la carpeta movies contiene toda la logica asociada al crud de peliculas y en users la logica de negocio relacionada, tambien se crearon dtos para utilizar con request y response, schemas para validar bodys.
