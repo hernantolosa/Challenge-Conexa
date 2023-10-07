@@ -12,15 +12,10 @@ export class LoggerMiddleware implements NestMiddleware {
     res.on('finish', () => {
       const { statusCode, statusMessage } = res;
       const contentLength = res.get('content-length');
-      const responseBody = res.locals.body;
 
       this.logger.log(
-        `${method} ${originalUrl} - ${statusCode} ${statusMessage} - ${contentLength} bytes - ${userAgent}`,
+        ` Method: ${method} - Path: ${originalUrl} - statusCode: ${statusCode} ${statusMessage} - ${contentLength} bytes - UserAgent: ${userAgent}`,
       );
-
-      if (responseBody) {
-        this.logger.log(`Response Body: ${JSON.stringify(responseBody)}`);
-      }
     });
 
     next();

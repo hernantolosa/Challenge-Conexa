@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards, UseInterceptors } from '@nestjs/common';
 import { MoviesService } from './movie.service';
 import { Movie, MovieDocument } from './schemas/movie.schema';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
@@ -7,25 +7,25 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { UserRole } from '../users/enums/roles.enum';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { CreateMovieResponseDto } from './dto/create-movie-response.dto';
-import { GetUser } from '@app/users/decorators/get-user.decorator';
-import { User } from '@app/users/types/user.type';
+import { MovieSerializationInterceptor } from '@app/movies/interceptors/movie.interceptor';
 
 
+@UseInterceptors(MovieSerializationInterceptor)
 @Controller('api/movies')
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Get()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async findAll(@GetUser() user: User): Promise<{ movies: any[] }> {
-    const movies = await this.moviesService.findAll(user.role);
+  async findAll(): Promise<{ movies: any[] }> {
+    const movies = await this.moviesService.findAll();
     return { movies };
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async findOne(@Param('id') id: string, @GetUser() user: User): Promise<Movie> {
-    return this.moviesService.findOne(id, user.role);
+  async findOne(@Param('id') id: string): Promise<Movie> {
+    return this.moviesService.findOne(id);
   }
 
   @Post()
