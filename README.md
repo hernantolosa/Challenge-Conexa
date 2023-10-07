@@ -60,13 +60,13 @@ Se adjunta carpeta para hacer ejecuciones via postman
 
 # Librerias usadas
 
-Bycript
-Passport
-jwt
-mongoose
-typeorm
-dotenv
-class-validator
+-bycript
+-passport
+-jwt
+-mongoose
+-typeorm
+-dotenv
+-class-validator
 
 # Informacion del proyecto
 
