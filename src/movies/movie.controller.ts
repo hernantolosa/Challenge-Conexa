@@ -32,7 +32,7 @@ export class MoviesController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   async create(@Body() createMovieDto: CreateMovieDto): Promise<CreateMovieResponseDto> {
-    const movie = await this.moviesService.create(createMovieDto) as MovieDocument;
+    const movie : any = await this.moviesService.create(createMovieDto);
     return {
       code: "000",
       description: `Success: Movie id ${movie._id} created successfully`
