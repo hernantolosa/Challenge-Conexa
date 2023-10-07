@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug NestJS",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": ["run", "start:debug"],
+      "args": ["${workspaceFolder}/src/main.ts"],
+      "cwd": "${workspaceFolder}",
+      "sourceMaps": true,
+      "restart": true,
+      "outputCapture": "std",
+      "console": "integratedTerminal",
+      "runtimeExecutable": "npm",
+
+    }
+  ]
+}
