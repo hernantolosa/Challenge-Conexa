@@ -18,6 +18,8 @@ Para ejecutar un endpoint sera de la siguiente manera
 
 Primer paso: ejecutar en postman: 
 via POST la url: localhost:3000/api/auth/register y con el body: 
+
+```json
 {
     "username": "conexatest3",
     "email": "conex3a@gmail.com",
@@ -45,7 +47,9 @@ Para lo que es administrador, creamos al inicializarl la app un admin default qu
 {
     "username": "admin",
     "password": "passwordAdmin"
-} nos dara el token de admin y podremos probar los otros endpoints de creacion edicion y borrar peliculas.
+} 
+
+nos dara el token de admin y podremos probar los otros endpoints de creacion edicion y borrar peliculas.
 
 Se adjunta carpeta para hacer ejecuciones via postman
 
