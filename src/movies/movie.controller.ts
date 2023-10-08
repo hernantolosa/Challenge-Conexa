@@ -24,8 +24,9 @@ export class MoviesController {
 
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async findOne(@Param('id') id: string): Promise<Movie> {
-    return this.moviesService.findOne(id);
+  async findOne(@Param('id') id: string): Promise<{movieDetails : Movie}> {
+    const movieDetails = await this.moviesService.findOne(id);
+    return { movieDetails }
   }
 
   @Post()

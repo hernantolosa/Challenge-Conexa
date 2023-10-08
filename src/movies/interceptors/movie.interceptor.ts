@@ -37,7 +37,10 @@ export class MovieSerializationInterceptor extends BaseSerializer {
   private serializeForRegular(data: any): any {
     if (data && data.movies) {
       data.movies = data.movies.map(this.serializeMovie);
+    } else {
+        data.movieDetails = this.serializeMovie(data.movieDetails);
     }
+
     return data;
   }
 
