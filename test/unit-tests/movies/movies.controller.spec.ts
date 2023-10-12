@@ -95,7 +95,7 @@ describe('MoviesController', () => {
         "releaseDate": "1980/07/31",
         "rating": 8
     };
-    jest.spyOn(moviesService, 'create').mockRejectedValue(new Error());
+    jest.spyOn(moviesService, 'create').mockRejectedValue(new FailedToCreateMovieException());
 
     await expect(moviesController.create(mockMovieDto)).rejects.toThrow(FailedToCreateMovieException);
   });
